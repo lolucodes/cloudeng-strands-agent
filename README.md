@@ -49,14 +49,14 @@ The solution consists of:
 
 ### Architecture Diagram
 
-![AWS Cloud Engineer Agent Architecture](./generated-diagrams/aws_cloud_engineer_agent_architecture.png)
+![AWS Cloud Engineer Agent Architecture](./aws_cloud_engineer_agent_architecture.png)
 
 ## Local Development
 
 ### Prerequisites
 
 - Python 3.11+
-- AWS CLI configured with appropriate permissions
+- AWS CLI configured wsith appropriate permissions
 - Node.js and npm (for CDK)
 - AWS Bedrock access with permissions for Amazon Nova Premier model
 
