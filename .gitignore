@@ -39,6 +39,7 @@ cdk/cdk.out/
 cdk/.cdk.staging/
 cdk/dist/
 cdk/tsconfig.tsbuildinfo
+cdk.context.json
 
 # Streamlit
 .streamlit/
