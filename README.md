@@ -56,7 +56,7 @@ The solution consists of:
 ### Prerequisites
 
 - Python 3.11+
-- AWS CLI configured wsith appropriate permissions
+- AWS CLI configured with appropriate permissions
 - Node.js and npm (for CDK)
 - AWS Bedrock access with permissions for Amazon Nova Premier model
 
@@ -84,7 +84,7 @@ The solution consists of:
 
 1. Navigate to the CDK directory:
    ```
-   cd cdk
+   cd cloud-engineer-agent-cdk
    ```
 
 2. Install dependencies:
