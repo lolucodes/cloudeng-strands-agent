@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+*-env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+generated-diagrams
+
+# CDK
+cdk/node_modules/
+cdk/cdk.out/
+cdk/.cdk.staging/
+cdk/dist/
+cdk/tsconfig.tsbuildinfo
+
+# Streamlit
+.streamlit/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS specific
+.DS_Store
+Thumbs.db
