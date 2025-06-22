@@ -3,10 +3,43 @@ from strands.tools.mcp import MCPClient
 from strands.models import BedrockModel
 from mcp import StdioServerParameters, stdio_client
 from strands_tools import use_aws
+from strands.tools import Tool
 
 import os
 import atexit
-from typing import Dict
+from typing import Dict, Any, List
+
+# Helper function to resolve '$ref' in JSON schemas
+def resolve_schema_refs(schema_node: Any, defs: Dict[str, Any]) -> Any:
+    """Recursively resolve '$ref' in a JSON schema."""
+    if isinstance(schema_node, dict):
+        if '$ref' in schema_node:
+            ref_path = schema_node['$ref']
+            if ref_path.startswith('#/$defs/'):
+                def_key = ref_path.split('/')[-1]
+                if def_key in defs:
+                    # Replace reference with the definition, and recurse
+                    return resolve_schema_refs(defs[def_key], defs)
+        return {k: resolve_schema_refs(v, defs) for k, v in schema_node.items()}
+    elif isinstance(schema_node, list):
+        return [resolve_schema_refs(item, defs) for item in schema_node]
+    else:
+        return schema_node
+
+# Function to process tool schemas and remove '$defs'
+def process_tool_schemas(tools: List[Tool]) -> List[Tool]:
+    """Process tool schemas to resolve '$ref' and remove '$defs'."""
+    for tool in tools:
+        if hasattr(tool, 'spec') and hasattr(tool.spec, 'input_schema') and hasattr(tool.spec.input_schema, 'json'):
+            schema = tool.spec.input_schema.json
+            if isinstance(schema, dict) and '$defs' in schema:
+                defs = schema.pop('$defs')
+                
+                resolved_schema = resolve_schema_refs(schema, defs)
+
+                schema.clear()
+                schema.update(resolved_schema)
+    return tools
 
 # Define common cloud engineering tasks
 PREDEFINED_TASKS = {
@@ -36,8 +69,8 @@ aws_diagram_mcp_client = MCPClient(lambda: stdio_client(
 aws_diagram_mcp_client.start()
 
 # Get tools from MCP clients
-docs_tools = aws_docs_mcp_client.list_tools_sync()
-diagram_tools = aws_diagram_mcp_client.list_tools_sync()
+docs_tools = process_tool_schemas(aws_docs_mcp_client.list_tools_sync())
+diagram_tools = process_tool_schemas(aws_diagram_mcp_client.list_tools_sync())
 
 # Create a BedrockModel with system inference profile
 bedrock_model = BedrockModel(
